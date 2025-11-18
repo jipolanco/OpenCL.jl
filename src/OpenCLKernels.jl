@@ -101,7 +101,7 @@ function (obj::KA.Kernel{OpenCLBackend})(args...; ndrange=nothing, workgroupsize
 
     # this might not be the final context, since we may tune the workgroupsize
     ctx = KA.mkcontext(obj, ndrange, iterspace)
-    kernel = @opencl launch=false obj.f(ctx, args...)
+    kernel = @opencl launch=false extensions=["SPV_EXT_shader_atomic_float_add"] obj.f(ctx, args...)
 
     # figure out the optimal workgroupsize automatically
     if KA.workgroupsize(obj) <: KA.DynamicSize && workgroupsize === nothing
